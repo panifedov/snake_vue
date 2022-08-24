@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+   <InitGame v-if="gameStatus === 0 "/>
+   <Game v-if="gameStatus === 1 "/>
+   <GameOver v-if="gameStatus === 2 "/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import InitGame from './components/InitGame.vue'
+import Game from './components/Game.vue'
+import GameOver from './components/GameOver.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+   InitGame,
+   Game,
+   GameOver,
+  },
+  computed: {
+   gameStatus() {
+      return this.$store.getters['gameStatus']
+   }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 </style>
