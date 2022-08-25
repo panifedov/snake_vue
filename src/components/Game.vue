@@ -1,11 +1,6 @@
 <template>
 <div class="game">
-   <div class="score-container">
-      <div class="score-info">
-         <h1>SCORE</h1>
-         <span class="point">0</span>
-      </div>
-   </div>
+   <button class="btn" @click="check()"></button>
    <div class="map">
       <div class="line"
        v-for="line in mapState" 
@@ -25,7 +20,11 @@
 export default {
    name:"GameVue", 
    created() {
-      
+      this.initialization()
+   },
+   mounted() {
+      //document.addEventListener("keydown", (event) => this.keyboardDown(event));
+      //document.addEventListener("keyup", (event) => this.keyboardUp(event));
    },
    computed: {
       mapState() {
@@ -35,10 +34,14 @@ export default {
          return  this.$store.getters['getSnake']
       },
       food() {
-         this.$store.dispatch("setFood", 1,2)
+         return  this.$store.getters['getFood']
+      },
+      snakeDirection(){
+         return this.$store.getters['getSnakeDirection']
       }
    },
    methods: {
+      //Стилизация блоков
       blockColor(block) {
          if(block> 0) {
             if(block === 1){
@@ -50,7 +53,16 @@ export default {
             }
          }
       },
-      //HELP METHODS
+      //Тестовая проверка
+      check(){
+         this.calculateSnakeNextHead()
+      },
+      //Установка еды и змеи в map
+      initizalization() {
+         this.$store.dispatch('initFood')
+         this.$store.dispatch('initSnake')
+      },
+      //                                                             HELP METHODS
       randomize() {
          let y = Math.floor(Math.random() * (19-1)+1)
          let x = Math.floor(Math.random() *(19-1)+1)
@@ -59,9 +71,25 @@ export default {
       arePointsEqual([y1,x1] , [y2,x2]) {
          return y1 === y2 && x1 === x2
       },
-      isPartOfSnake() {
-      },
-      initSnake() {
+      //HELP METHODS
+     // isPartOfSnake() {
+         //snake.forEach(element => {
+        //    arePointsEqual()
+        // });
+      //},
+      //                                                                MAIN METHODS 
+      //Считаем дальнейшую точку головы змеи
+      calculateSnakeNextHead() {
+         //берём текущую голову змеи  
+         //let head = this.snake.slice(-1)
+         //увеличиваем на 1 
+        // head.forEach(array => {
+         //   array[1]++
+         //});
+         //добавляем его в setnextSnakeHead
+         //this.$store.dispatch('setNexSnakeHead', head)
+         //добавляем его cut tail
+         this.$store.dispatch('cutSnakeTail')
       }
    }
 }
@@ -71,8 +99,13 @@ export default {
 body {
    background-color: rgb(0, 0, 0);
 }
+.game {
+   width: 100%;
+   height: 100%;
+}
 .btn {
-   width: 200px;
+   height: 300px;
+   width: 300px;
 }
 .map {
    margin: auto;
@@ -97,37 +130,37 @@ body {
 }
 .snake {
    height: 100%;
-    width: 30%;
-    border-style: groove;
-    border-width: 1px;
-    border-color: rgb(82, 196, 54);
-    display: block !important;
-    background-color: #fff;
+   width: 30%;
+   border-style: groove;
+   border-width: 1px;
+   border-color: rgb(82, 196, 54);
+   display: block !important;
+   background-color: #fff;
 }
 .food {
    height: 100%;
-    width: 30%;
-    border-style: groove;
-    border-width: 1px;
-    border-color: rgb(82, 196, 54);
-    display: block !important;
-    background-color: #f80202;
+   width: 30%;
+   border-style: groove;
+   border-width: 1px;
+   border-color: rgb(82, 196, 54);
+   display: block !important;
+   background-color: #f80202;
 }
 .score-container {
    display: flex;
-    justify-content: center;
-    /* margin-right: 5%; */
-    margin-top: 5%;
-    /* width: 300px; */
-    /* height: 300px; */
-    flex-direction: row-reverse;
-    align-content: stretch;
+   justify-content: center;
+   /* margin-right: 5%; */
+   margin-top: 5%;
+   /* width: 300px; */
+   /* height: 300px; */
+   flex-direction: row-reverse;
+   align-content: stretch;
 }
 .score-info {
-    /* justify-content: space-between; */
-    color: green;
-    text-align: center;
-    font-size: -webkit-xxx-large;
+   /* justify-content: space-between; */
+   color: green;
+   text-align: center;
+   font-size: -webkit-xxx-large;
 }
 .point {
 

@@ -27,7 +27,15 @@ export default {
 </script>
 
 <style>
-
+.body {
+   height: 100%;
+   width: 100%;
+   overflow: hidden;
+}
+.app {
+   height: 100%;
+   width: 100%;
+}
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');

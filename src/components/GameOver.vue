@@ -29,12 +29,12 @@ body {
    height: 100%;
 }
 .header {
-    position: absolute;
-    text-align: center;
-    /* display: contents; */
-    /*margin-top: 30%;*/
-    width: 100%;
-    height: 100%;
+   position: absolute;
+   text-align: center;
+   /* display: contents; */
+   /*margin-top: 30%;*/
+   width: 100%;
+   height: 100%;
 }
 .game-over {
    font-size: -webkit-xxx-large;

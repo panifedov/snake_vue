@@ -30,8 +30,14 @@ export default {
 
 <style>
 body {
+   width: 100%;
+   height: 100%;
    background-color: rgb(0, 0, 0);
    color: rgb(35, 141, 35);
+}
+.intro {
+   width: 100%;
+   height: 100%;
 }
 .intro-text {
    position: relative;
