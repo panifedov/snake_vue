@@ -50,7 +50,10 @@ export default new Vuex.Store({
       getSnakeDirection(state){
          return state.snakeDirection
       },
-      getNextSnakeHead(){
+      getSnakeHead(state){
+         return state.snake.slice(-1)
+      },
+      getNextSnakeHead(state) {
          return state.nextSnakeHead
       },
    },
@@ -58,23 +61,29 @@ export default new Vuex.Store({
       setGameState({ commit }, value) {
 			commit("setGameState", value);
 		},
+      clearMap({commit}){
+         commit('clearMap')
+      },
       initFood({commit}){
-         commit('setFood')
+         commit('initFood')
       },
       initSnake({commit}) {
          commit('setSnake')
       },
-      getSnakeHead({commit}){
-         commit('getSnakeHead')
+      setNextSnakeHead({commit}, poin){
+         commit('setNextSnakeHead',poin)
       },
-      setNexSnakeHead({commit},head){
-         commit('setNexSnakeHead',head)
+      moveSnakeHead({commit}){
+         commit('moveSnakeHead')
       },
-      cutSnakeTail({commit},) {
+      cutSnakeTail({commit}){
          commit('cutSnakeTail')
       },
-      moveSnakeHead({commit}) {
-         commit('moveSnakeHead')
+      setFood({commit}, food) {
+         commit('setFood',food)
+      },
+      setLastPressedKey({commit}, item){
+         commit('setLastPressedKey', item)
       }
    },
    methods: {
@@ -83,7 +92,7 @@ export default new Vuex.Store({
       setGameState(state,value) {
          state.gameStatus = value;
       },
-      setFood(state) {
+      initFood(state) {
          state.mapState[state.food[0]].splice(state.food[1],1,2)
       },
       setSnake(state){
@@ -93,29 +102,30 @@ export default new Vuex.Store({
             state.mapState[y].splice(x,1,1)
          }
       },
-      //getNextSnakeHead(state){
-         //state
-      //},
-      setNexSnakeHead(state,head){
-         state.snake.push(head)
-         state.nextSnakeHead = head
-         for(let i = 0 ; i <state.snake.length ; i++){
-            let y = state.snake[i][0]
-            let x = state.snake[i][1]
-            state.mapState[y].splice(x,1,1)
+      clearMap(state) {
+         state.mapState = []
+         for(let i = 0 ; i < 21; i ++){
+            state.mapState.push(Array(20).fill(0))
          }
+      },
+      setNextSnakeHead(state,point){
+         state.nextSnakeHead = point
+      },
+      moveSnakeHead(state){
+         state.snake.push(state.nextSnakeHead)//добавили в змею
+         state.mapState.nextSnakeHead[0].splice(state.nextSnakeHead[1],1,1)//в карту
+         state.nextSnakeHead = null//сделали null
       },
       cutSnakeTail(state) {
+         let tail = state.snake[0]
+         state.mapState[tail[0]].splice(tail[1],1,0)
          state.snake.shift()
-         for(let i = 0 ; i <state.snake.length ; i++){
-            let y = state.snake[i][0]
-            let x = state.snake[i][1]
-            state.mapState[y].splice(x,1,1)
-         }
       },
-      //moveSnakeHead(state) {
-         //let headSnake = state.snake.slice(-1)
-         //не знаю как 
-      //},
+      setFood(state,food) {
+         state.food = food
+      },
+      setLastPressedKey(state, item) {
+         state.snakeDirection = item
+      }
    }
 });

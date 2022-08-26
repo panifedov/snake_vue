@@ -17,10 +17,11 @@
 </template>
 
 <script>
+
 export default {
    name:"GameVue", 
    created() {
-      this.initialization()
+      this.startGame()
    },
    mounted() {
       //document.addEventListener("keydown", (event) => this.keyboardDown(event));
@@ -38,6 +39,12 @@ export default {
       },
       snakeDirection(){
          return this.$store.getters['getSnakeDirection']
+      },
+      getSnakeHead() {
+         return this.$store.getters['getSnakeHead']
+      },
+      getNextSnakeHead() {
+         return this.$store.getters['getNextSnakeHead']
       }
    },
    methods: {
@@ -56,11 +63,7 @@ export default {
       //Тестовая проверка
       check(){
          this.calculateSnakeNextHead()
-      },
-      //Установка еды и змеи в map
-      initizalization() {
-         this.$store.dispatch('initFood')
-         this.$store.dispatch('initSnake')
+         this.moveSnakeHead()
       },
       //                                                             HELP METHODS
       randomize() {
@@ -71,25 +74,108 @@ export default {
       arePointsEqual([y1,x1] , [y2,x2]) {
          return y1 === y2 && x1 === x2
       },
-      //HELP METHODS
-     // isPartOfSnake() {
-         //snake.forEach(element => {
-        //    arePointsEqual()
-        // });
-      //},
+      ifPartOfSnake([y,x]) {
+         this.snake.forEach(array => {
+            if(arePointsEqual([array[0],array[1]] , [y,x]) == false ){
+               return true
+            } else {
+               return false
+            }
+         });
+      },
       //                                                                MAIN METHODS 
-      //Считаем дальнейшую точку головы змеи
-      calculateSnakeNextHead() {
-         //берём текущую голову змеи  
-         //let head = this.snake.slice(-1)
-         //увеличиваем на 1 
-        // head.forEach(array => {
-         //   array[1]++
-         //});
-         //добавляем его в setnextSnakeHead
-         //this.$store.dispatch('setNexSnakeHead', head)
-         //добавляем его cut tail
+      calculateSnakeNextHead(){
+         const direction = this.getSnakeDirection
+         this.getSnakeHead
+         this.getSnakeDirection
+         if(direction == "Right"){
+            let y = this.getSnakeHead[0]
+            let x = this.getSnakeHead[1]++
+            let point = [y,x]
+            this.$store.dispatch('setNextSnakeHead', point )
+         }
+         if(direction == "Left"){
+            let y = this.getSnakeHead[0]
+            let x = this.getSnakeHead[1]--
+            let point = [y,x]
+            this.$store.dispatch('setNextSnakeHead', point )
+         }
+         if(direction == "Up"){
+            let y = this.getSnakeHead[0]--
+            let x = this.getSnakeHead[1]
+            let point = [y,x]
+            this.$store.dispatch('setNextSnakeHead', point )
+         }
+         if(direction == "Down"){
+            let y = this.getSnakeHead[0]++
+            let x = this.getSnakeHead[1]
+            let point = [y,x]
+            this.$store.dispatch('setNextSnakeHead', point )
+         }
+
+      },
+      isSnakeCrash(){
+         let nextHead = this.getNextSnakeHead
+         let snake = this.getSnake
+         snake.forEach(array => {
+            if(this.arePointsEqual([array[0],array[1]] , [nextHead[0],nextHead[1]] ) == true) {
+               this.$store.dispatch('setGameState', 3)
+            }
+         });
+      },
+      isSnakeOutOfMap(){
+         if(this.getSnakeNextHead[0] < 0) {
+            this.$store.dispatch('setGameState', 3)
+         } 
+         if(this.getSnakeNextHead[0] > 19) {
+            this.$store.dispatch('setGameState', 3)
+         } 
+         if(this.getSnakeNextHead[1] < 0) {
+            this.$store.dispatch('setGameState', 3)
+         } 
+         if(this.getSnakeNextHead[1] > 19) {
+            this.$store.dispatch('setGameState', 3)
+         } 
+      },
+      ifSnakeIfOnFood(){
+         if(this.getNextSnakeHead == this.getFood){
+            false
+         } else {
+            true
+         }
+      },
+      moveSnakeHead(){
+         this.$store.dispatch('moveSnakeHead')
+      },
+      cutSnakeTail(){
          this.$store.dispatch('cutSnakeTail')
+      },
+      regenerateFood() {
+         let food = this.randomize()
+         if(ifPartOfSnake(food) == true) {
+            return this.regenerateFood() // почему возвращается метод а не food??
+         }
+         this.$store.dispatch('setFood',food)
+      },
+      loop() {
+         this.calculateSnakeNextHead()
+         this.isSnakeCrash()
+         this.isSnakeOutOfMap()
+         if(this.ifSnakeIfOnFood() == true){
+            this.moveSnakeHead()
+            this.regenerateFood()
+         } else {
+            this.moveSnakeHead()
+            this.cutSnakeTail()
+         }
+      },
+      startGame() {
+         this.$store.dispatch('clearMap')
+         this.$store.dispatch('initSnake')
+         this.$store.dispatch('initFood')
+         setTimeout(() => {
+            this.loop()
+         }, 4000);
       }
    }
 }
