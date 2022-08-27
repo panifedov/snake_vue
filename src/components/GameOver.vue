@@ -4,15 +4,20 @@
          <span class="game-over">GAME OVER</span>
       </div>
       <div class="restart-container">
-         <button class="restart">RESTART</button>
+         <button class="btn-restart" @click="restart()">RESTART</button>
       </div>
    </div>
 </template>
 
 <script>
 export default {
-   name:"GameOver"
-
+   name:"GameOver",
+   methods:{
+      restart(){
+         console.log('restart');
+         this.$store.dispatch("setGameState", 0)
+      }
+   },
 }
 </script>
 
@@ -44,15 +49,14 @@ body {
    margin-top: 5%;
    text-align: center;
 }
-.restart {
+.btn-restart {
    font-size: 30px;
    background-color: #000;
    border: none;
-   color: #218e27;
+   color: #1a801f;
 
 }
-.restart:hover {
-   background-color: #fff;
-   color: #537429;
+.btn-restart:hover {
+   color: #f7df09;
 }
 </style>

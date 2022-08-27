@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
    state:{
-      gameStatus:0,
+      gameStatus:1,
       lastPressedKey:"ArrowRight",
       snake:[[0,0],[0,1],[0,2]],
       food:[0,6],
@@ -51,7 +51,7 @@ export default new Vuex.Store({
          return state.snakeDirection
       },
       getSnakeHead(state){
-         return state.snake.slice(-1)
+         return state.snake[state.snake.length-1]
       },
       getNextSnakeHead(state) {
          return state.nextSnakeHead
@@ -112,9 +112,13 @@ export default new Vuex.Store({
          state.nextSnakeHead = point
       },
       moveSnakeHead(state){
-         state.snake.push(state.nextSnakeHead)//добавили в змею
-         state.mapState.nextSnakeHead[0].splice(state.nextSnakeHead[1],1,1)//в карту
+         let nextHead = state.nextSnakeHead
+         let y = nextHead[0]
+         let x = nextHead[1]
+         state.snake.push(nextHead)
+         state.mapState[y].splice(x,1,1)//в карту
          state.nextSnakeHead = null//сделали null
+         //console.log(state.nextSnakeHead)
       },
       cutSnakeTail(state) {
          let tail = state.snake[0]
@@ -123,6 +127,7 @@ export default new Vuex.Store({
       },
       setFood(state,food) {
          state.food = food
+         state.mapState[state.food[0]].splice(state.food[1],1,2)
       },
       setLastPressedKey(state, item) {
          state.snakeDirection = item
