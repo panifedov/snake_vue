@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
    state:{
-      gameStatus:1,
+      gameStatus:0,
       lastPressedKey:"ArrowRight",
       snake:[[0,0],[0,1],[0,2]],
       food:[0,6],
@@ -82,8 +82,8 @@ export default new Vuex.Store({
       setFood({commit}, food) {
          commit('setFood',food)
       },
-      setLastPressedKey({commit}, item){
-         commit('setLastPressedKey', item)
+      setLastPressedKey({commit}, direction){
+         commit('setLastPressedKey', direction)
       }
    },
    methods: {
@@ -104,7 +104,7 @@ export default new Vuex.Store({
       },
       clearMap(state) {
          state.mapState = []
-         for(let i = 0 ; i < 21; i ++){
+         for(let i = 0 ; i < 20; i ++){
             state.mapState.push(Array(20).fill(0))
          }
       },
@@ -116,9 +116,8 @@ export default new Vuex.Store({
          let y = nextHead[0]
          let x = nextHead[1]
          state.snake.push(nextHead)
-         state.mapState[y].splice(x,1,1)//в карту
-         state.nextSnakeHead = null//сделали null
-         //console.log(state.nextSnakeHead)
+         state.mapState[y][x] = 1
+         state.nextSnakeHead = null
       },
       cutSnakeTail(state) {
          let tail = state.snake[0]
@@ -129,8 +128,8 @@ export default new Vuex.Store({
          state.food = food
          state.mapState[state.food[0]].splice(state.food[1],1,2)
       },
-      setLastPressedKey(state, item) {
-         state.snakeDirection = item
+      setLastPressedKey(state, direction) {
+         state.snakeDirection = direction
       }
    }
 });

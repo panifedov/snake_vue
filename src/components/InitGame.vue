@@ -15,6 +15,9 @@
  
 export default {
    name: "InitGame",
+   mounted() {
+        document.addEventListener("keydown", () => this.start());
+      },
    data() {
       return {
       }

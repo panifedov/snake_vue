@@ -1,6 +1,5 @@
 <template>
 <div class="game">
-   <button class="btn" @click="check()"></button>
    <div class="map">
       <div class="line"
        v-for="line in mapState" 
@@ -19,206 +18,201 @@
 <script>
 
 export default {
-   name:"GameVue", 
-   created() {
-      //this.startGame()
-      this.$store.dispatch('initSnake')
-      this.$store.dispatch('initFood')
-   },
-   mounted() {
-      //document.addEventListener("keydown", (event) => this.keyboardDown(event));
-      //document.addEventListener("keyup", (event) => this.keyboardUp(event));
-   },
-   computed: {
-      mapState () {
-         return  this.$store.getters[ 'mapState' ]
-      },
-      snake () {
-         return  this.$store.getters[ 'getSnake' ]
-      },
-      getFood () {
-         return  this.$store.getters[ 'getFood' ]
-      },
-      snakeDirection () {
-         return this.$store.getters[ 'getSnakeDirection' ]
-      },
-      getSnakeHead () {
-         return this.$store.getters[ 'getSnakeHead' ]
-      },
-      getNextSnakeHead () {
-         return this.$store.getters[ 'getNextSnakeHead' ]
-      }
-   },
-   methods: {
-      //Стилизация блоков
-      blockColor ( block ) {
-         if( block > 0) {
-            if( block === 1){
-               return 'green'
-            }if( block === 2) {
-               return 'red'
-            } else {
-               return 'black'
+    name: "GameVue",
+    created() {
+      this.startGame()
+    },
+    mounted() {
+        document.addEventListener("keydown", (event) => this.setLastPressedKey(event));
+        document.addEventListener("keyup", (event) => this.setLastPressedKey(event));
+    },
+    computed: {
+        mapState() {
+            return this.$store.getters['mapState']
+        },
+        snake() {
+            return this.$store.getters['getSnake']
+        },
+        getFood() {
+            return this.$store.getters['getFood']
+        },
+        snakeDirection() {
+            return this.$store.getters['getSnakeDirection']
+        },
+        getSnakeHead() {
+            return this.$store.getters['getSnakeHead']
+        },
+        getNextSnakeHead() {
+            return this.$store.getters['getNextSnakeHead']
+        }
+    },
+    methods: {
+        //Стилизация блоков
+        blockColor(block) {
+            if (block > 0) {
+                if (block === 1) {
+                    return 'green'
+                }
+                if (block === 2) {
+                    return 'red'
+                } else {
+                    return 'black'
+                }
             }
+        },
+        //                                                             HELP METHODS
+        randomize() {
+            let y = Math.floor(Math.random() * (19 - 1) + 1)
+            let x = Math.floor(Math.random() * (19 - 1) + 1)
+            return [y, x]
+        },
+        arePointsEqual([y1, x1], [y2, x2]) {
+            return y1 === y2 && x1 === x2
+        },
+        ifPartOfSnake([y, x]) {
+            let snake = this.snake
+            snake.forEach(array => {
+                if (this.arePointsEqual([array[0], array[1]], [y, x]) == false) {
+                    return true
+                } else {
+                    return false
+                }
+            });
+        },
+        //                                                                MAIN METHODS 
+        setLastPressedKey(event){
+         let direction 
+         if (event.key === "ArrowLeft") {
+            direction = "Left"
+            this.$store.dispatch('setLastPressedKey', direction)
          }
-      },
-      //Тестовая проверка
-      check (){
-         //let y = this.getSnakeHead[0]
-         //let x = this.getSnakeHead[1]
-         //let newX 
-         //newX = x+1
-         //let point = [y,newX]
-         //this.$store.dispatch('setNextSnakeHead', point )// кладу в state setNextSnakeHead новую голову
-         //this.$store.dispatch('moveSnakeHead')//вызываю метод 
-         //this.cutSnakeTail() 
-         //this.isSnakeOutOfMap()
-         //this.ifSnakeIfOnFood()
-         //this.regenerateFood()
-         //if(this.ifSnakeIfOnFood() == true){
-           // this.regenerateFood()
-         //}
-         //this.isSnakeCrash()
-         ////////////////////////////////////////////////////////////////////////////////////
-         //this.calculateSnakeNextHead()
-         //this.isSnakeCrash()
-         this.isSnakeOutOfMap()
-         if(this.ifSnakeIfOnFood() == true){
-            this.moveSnakeHead()
-            this.regenerateFood()
-         } else {
-            this.moveSnakeHead()
-            this.cutSnakeTail()
+         if (event.key === "ArrowRight") {
+            direction = "Right"
+            this.$store.dispatch('setLastPressedKey', direction)
          }
-      },
-      //                                                             HELP METHODS
-      randomize () {
-         let y = Math.floor( Math.random () * ( 19-1 ) + 1 )
-         let x = Math.floor( Math.random () * ( 19-1 ) + 1 )
-         return [ y , x ]
-      },
-      arePointsEqual( [ y1 , x1 ] , [ y2 , x2 ] ) {
-         return y1 === y2 && x1 === x2
-      },
-      ifPartOfSnake( [ y , x ]) {
-         let snake = this.snake
-         snake.forEach(array => {
-            if(this.arePointsEqual( [ array[0] , array[1] ] , [ y , x ] ) == false ){
+         if (event.key === "ArrowUp") {
+            direction = "Up"
+            this.$store.dispatch('setLastPressedKey', direction)
+         }
+         if (event.key === "ArrowDown") {
+            direction = "Down"
+            this.$store.dispatch('setLastPressedKey', direction)
+         }
+        },
+        calculateSnakeNextHead() {
+            const direction = this.snakeDirection
+            this.getSnakeHead
+            this.getSnakeDirection
+            if (direction == "Right" && direction !== "Left") {
+                let y = this.getSnakeHead[0]
+                let x = this.getSnakeHead[1]
+                let newX
+                newX = x + 1
+                let point = [y, newX]
+                this.$store.dispatch('setNextSnakeHead', point)
+            }
+            if (direction == "Left" && direction !== "Right") {
+                let y = this.getSnakeHead[0]
+                let x = this.getSnakeHead[1]
+                let newX
+                newX = x - 1
+                let point = [y, newX]
+                this.$store.dispatch('setNextSnakeHead', point)
+            }
+            if (direction == "Up" && direction !=="Down") {
+                let y = this.getSnakeHead[0]
+                let x = this.getSnakeHead[1]
+                let newY
+                newY = y - 1
+                let point = [newY, x]
+                this.$store.dispatch('setNextSnakeHead', point)
+            }
+            if (direction == "Down" && direction !=="Up") {
+                let y = this.getSnakeHead[0]
+                let x = this.getSnakeHead[1]
+                let newY
+                newY = y + 1
+                let point = [newY, x]
+                this.$store.dispatch('setNextSnakeHead', point)
+            }
+        },
+        isSnakeCrash() {
+            let nextHead = this.getNextSnakeHead
+            let snake = this.snake
+            snake.forEach(array => {
+                if (this.arePointsEqual([array[0], array[1]], [nextHead[0], nextHead[1]]) == true) {
+                    this.$store.dispatch('setGameState', 2)
+                }
+            });
+        },
+        isSnakeOutOfMap() {
+            let x = this.getNextSnakeHead[1]
+            let y = this.getNextSnakeHead[0]
+            if (y < 0) {
+                this.$store.dispatch('setGameState', 2)
+            }
+            if (y > 19) {
+                this.$store.dispatch('setGameState', 2)
+            }
+            if (x < 0) {
+                this.$store.dispatch('setGameState', 2)
+            }
+            if (x > 19) {
+                this.$store.dispatch('setGameState', 2)
+            }
+        },
+        isSnakeIfOnFood() {
+            let headY = this.getNextSnakeHead[0]
+            let headX = this.getNextSnakeHead[1]
+            let foodY = this.getFood[0]
+            let foodX = this.getFood[1]
+            
+            if (headX == foodX && headY == foodY) {
                return true
             } else {
                return false
             }
-         });
-      },
-      //                                                                MAIN METHODS 
-      calculateSnakeNextHead () {
-         const direction = this.snakeDirection
-         this.getSnakeHead
-         this.getSnakeDirection
-         if( direction == "Right" ){
-            let y = this.getSnakeHead[0]
-            let x = this.getSnakeHead[1]
-            let newX 
-            newX = x+1
-            let point = [ y , newX ]
-            this.$store.dispatch( 'setNextSnakeHead' , point )
-         }
-         if( direction == "Left"){
-            let y = this.getSnakeHead[0]
-            let x = this.getSnakeHead[1]
-            let newX 
-            newX = x-1
-            let point = [ y , newX ]
-            this.$store.dispatch( 'setNextSnakeHead' , point )
-         }
-         if( direction == "Up"){
-            let y = this.getSnakeHead[0]
-            let x = this.getSnakeHead[1]
-            let newY 
-            newY = y-1
-            let point = [ newY , x ]
-            this.$store.dispatch( 'setNextSnakeHead' , point )
-         }
-         if(direction == "Down"){
-            let y = this.getSnakeHead[0]
-            let x = this.getSnakeHead[1]
-            let newY 
-            newY = y+1
-            let point = [ newY , x ]
-            this.$store.dispatch( 'setNextSnakeHead' , point )
-         }
-      },
-      isSnakeCrash () {
-         let nextHead = this.getNextSnakeHead
-         let snake = this.snake
-         snake.forEach( array => {
-            if(this.arePointsEqual( [array[0] , array[1] ] , [ nextHead[0] , nextHead[1] ] ) == true) {
-               this.$store.dispatch( 'setGameState' , 2 )
+        },
+        moveSnakeHead() {
+            this.$store.dispatch('moveSnakeHead')
+        },
+        cutSnakeTail() {
+            this.$store.dispatch('cutSnakeTail')
+        },
+        regenerateFood() {
+            let food = this.randomize()
+            console.log(food);
+            if (this.ifPartOfSnake(food) == true) {
+                return this.regenerateFood()
             }
-         });
-      },
-      isSnakeOutOfMap () {
-         let x = this.getNextSnakeHead[1]
-         let y = this.getNextSnakeHead[0]
-         if( y < 0 ) {
-            this.$store.dispatch( 'setGameState' , 2 )
-         } 
-         if( y > 19 ) {
-            this.$store.dispatch( 'setGameState' , 2 )
-         } 
-         if( x < 0 ) {
-            this.$store.dispatch( 'setGameState' , 2 )
-         } 
-         if( x > 19 ) {
-            this.$store.dispatch( 'setGameState' , 2 )
-         } 
-      },
-      ifSnakeIfOnFood () {
-         let headY = this.getNextSnakeHead[0]
-         let headX = this.getNextSnakeHead[1]
-         let foodY = this.getFood[0]
-         let foodX = this.getFood[1]
-         if( headX == foodX && headY == foodY ){
-            true
-         } else {
-            false
+            console.log(food);
+            this.$store.dispatch('setFood', food)
+        },
+         loop() {
+           this.calculateSnakeNextHead()
+           this.isSnakeCrash()
+           this.isSnakeOutOfMap()
+            if(this.isSnakeIfOnFood() === true){
+               this.moveSnakeHead()
+               this.regenerateFood()
+            } else {
+              this.moveSnakeHead()
+              this.cutSnakeTail()
+            }
+          setTimeout(() => {
+             this.loop()
+            }, 400);
+         },
+        startGame() {
+            this.$store.dispatch('clearMap')
+            this.$store.dispatch('initSnake')
+            this.$store.dispatch('initFood')
+            setTimeout(() => {
+             this.loop()
+            }, 1000);
          }
-      },
-      async moveSnakeHead () {
-         this.$store.dispatch( 'moveSnakeHead' )
-      },
-      cutSnakeTail () {
-         this.$store.dispatch( 'cutSnakeTail' )
-      },
-      regenerateFood () {
-         let food = this.randomize()
-         if( this.ifPartOfSnake(food) == true ) {
-            return this.regenerateFood() 
-         }
-         this.$store.dispatch( 'setFood' , food )
-      },
-     // loop() {
-     //    this.calculateSnakeNextHead()
-      //   this.isSnakeCrash()
-      //   this.isSnakeOutOfMap()
-     //    if(this.ifSnakeIfOnFood() == true){
-      //      this.moveSnakeHead()
-      //      this.regenerateFood()
-       //  } else {
-      //      this.moveSnakeHead()
-       //     this.cutSnakeTail()
-       //  }
-     // },
-      //startGame() {
-        // this.$store.dispatch('clearMap')
-        // this.$store.dispatch('initSnake')
-        // this.$store.dispatch('initFood')
-         //setTimeout(() => {
-       //     this.loop()
-        // }, 400);
-    //  }
-   }
-}
+    }
+} 
 </script>
 
 <style>
