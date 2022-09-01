@@ -1,62 +1,44 @@
 <template>
-   <div class="wrapper-game-over">
-      <div class="header">
-         <span class="game-over">GAME OVER</span>
+	<div class="gameover" @click="this.restart">
+		<h1>GAME OVER</h1>
+      <div class="gameover-key">
+         <h2>press Any Key to return on main screen</h2>
       </div>
-      <div class="restart-container">
-         <button class="btn-restart" @click="restart()">RESTART</button>
+      <div class="labale">
+      <h4>GitHub</h4>
       </div>
-   </div>
+	</div>
 </template>
-
 <script>
 export default {
-   name:"GameOver",
-   methods:{
-      restart(){
-         console.log('restart');
-         this.$store.dispatch("setGameState", 0)
-      }
-   },
-}
+	created() {
+		document.addEventListener("keydown", () => this.restart());
+	},
+	methods: {
+		restart() {
+			location.reload();
+		},
+	},
+};
 </script>
-
 <style>
-body {
-   background-color: rgb(0, 0, 0);
-   color: rgb(255, 255, 255);
+.gameover {
+   font-family: 'Silkscreen', cursive;
+	position: absolute;
+	z-index: 1;
+	top: 20%;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
 }
-.wrapper-game-over {
-   position: absolute;
-    /* display: contents; */
-   margin-top: 30%;
-   width: 100%;
-   height: 100%;
+.gameover-key {
+   margin-top: 5% ;
+   color: aliceblue;
+   font-family: 'Silkscreen', cursive;
 }
-.header {
-   position: absolute;
+.labale {
    text-align: center;
-   /* display: contents; */
-   /*margin-top: 30%;*/
-   width: 100%;
-   height: 100%;
-}
-.game-over {
-   font-size: -webkit-xxx-large;
-   color: #b31818;
-}
-.restart-container {
-   margin-top: 5%;
-   text-align: center;
-}
-.btn-restart {
-   font-size: 30px;
-   background-color: #000;
-   border: none;
-   color: #1a801f;
-
-}
-.btn-restart:hover {
-   color: #f7df09;
+   margin-top: 15%;
+   font-family: 'Indie Flower', cursive;
 }
 </style>

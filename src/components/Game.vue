@@ -16,15 +16,12 @@
 </template>
 
 <script>
+import * as constants from '../constants/constants.js'
 
 export default {
     name: "GameVue",
     created() {
       this.startGame()
-    },
-    mounted() {
-        document.addEventListener("keydown", (event) => this.setLastPressedKey(event));
-        document.addEventListener("keyup", (event) => this.setLastPressedKey(event));
     },
     computed: {
         mapState() {
@@ -44,6 +41,9 @@ export default {
         },
         getNextSnakeHead() {
             return this.$store.getters['getNextSnakeHead']
+        },
+        getNewSnakeDirection() {
+            return this.$store.getters['getNewSnakeDirection']
         }
     },
     methods: {
@@ -80,62 +80,46 @@ export default {
             });
         },
         //                                                                MAIN METHODS 
-        setLastPressedKey(event){
-         let direction 
-         if (event.key === "ArrowLeft") {
-            direction = "Left"
-            this.$store.dispatch('setLastPressedKey', direction)
-         }
-         if (event.key === "ArrowRight") {
-            direction = "Right"
-            this.$store.dispatch('setLastPressedKey', direction)
-         }
-         if (event.key === "ArrowUp") {
-            direction = "Up"
-            this.$store.dispatch('setLastPressedKey', direction)
-         }
-         if (event.key === "ArrowDown") {
-            direction = "Down"
-            this.$store.dispatch('setLastPressedKey', direction)
-         }
-        },
         calculateSnakeNextHead() {
-            const direction = this.snakeDirection
-            this.getSnakeHead
-            this.getSnakeDirection
-            if (direction == "Right" && direction !== "Left") {
-                let y = this.getSnakeHead[0]
-                let x = this.getSnakeHead[1]
-                let newX
-                newX = x + 1
-                let point = [y, newX]
-                this.$store.dispatch('setNextSnakeHead', point)
-            }
-            if (direction == "Left" && direction !== "Right") {
-                let y = this.getSnakeHead[0]
-                let x = this.getSnakeHead[1]
-                let newX
-                newX = x - 1
-                let point = [y, newX]
-                this.$store.dispatch('setNextSnakeHead', point)
-            }
-            if (direction == "Up" && direction !=="Down") {
-                let y = this.getSnakeHead[0]
-                let x = this.getSnakeHead[1]
-                let newY
-                newY = y - 1
-                let point = [newY, x]
-                this.$store.dispatch('setNextSnakeHead', point)
-            }
-            if (direction == "Down" && direction !=="Up") {
-                let y = this.getSnakeHead[0]
-                let x = this.getSnakeHead[1]
-                let newY
-                newY = y + 1
-                let point = [newY, x]
-                this.$store.dispatch('setNextSnakeHead', point)
-            }
-        },
+               if (this.snakeDirection == constants.DIRECTION_RIGHT) {
+                  let y = this.getSnakeHead[0]
+                  let x = this.getSnakeHead[1]
+                  let newX = x + 1
+                  let point = [y, newX]
+                  //this.$store.dispatch('setNewSnakeDirection', newDirection)
+                  this.$store.dispatch('setNextSnakeHead', point)
+               }
+               if (this.snakeDirection == constants.DIRECTION_LEFT) {
+                  //let newDirection = this.getNewSnakeDirection
+                  //newDirection = constants.DIRECTION_LEFT
+                  let y = this.getSnakeHead[0]
+                  let x = this.getSnakeHead[1]
+                  let newX = x - 1
+                  let point = [y, newX]
+                  //this.$store.dispatch('setNewSnakeDirection', newDirection)
+                  this.$store.dispatch('setNextSnakeHead', point)
+               }
+               if (this.snakeDirection == constants.DIRECTION_UP  ) {
+                  //let newDirection = this.getNewSnakeDirection
+                  //newDirection = constants.DIRECTION_UP
+                  let y = this.getSnakeHead[0]
+                  let x = this.getSnakeHead[1]
+                  let newY = y - 1
+                  let point = [newY, x]
+                  //this.$store.dispatch('setNewSnakeDirection', newDirection)
+                  this.$store.dispatch('setNextSnakeHead', point)
+               }
+               if (this.snakeDirection == constants.DIRECTION_DOWN) {
+                  //let newDirection = this.getNewSnakeDirection
+                  //newDirection = constants.DIRECTION_DOWN
+                  let y = this.getSnakeHead[0]
+                  let x = this.getSnakeHead[1]
+                  let newY = y + 1
+                  let point = [newY, x]
+                  //this.$store.dispatch('setNewSnakeDirection', newDirection)
+                  this.$store.dispatch('setNextSnakeHead', point)
+               }
+         },
         isSnakeCrash() {
             let nextHead = this.getNextSnakeHead
             let snake = this.snake
@@ -211,7 +195,7 @@ export default {
              this.loop()
             }, 1000);
          }
-    }
+   }
 } 
 </script>
 

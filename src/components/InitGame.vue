@@ -4,6 +4,7 @@
    <div class="intro-button">
       <button class="btn-start" @click="start()">START</button>
       <button class="btn-records">RECORDS</button>
+      <div class="press-key"><h2>press Any Key to return on main screen</h2></div>
    </div>
    <div class="labale">
       <h4>GitHub</h4>
@@ -44,11 +45,17 @@ body {
 }
 .intro-text {
    position: relative;
-   font-family: 'Indie Flower', cursive;
+   font-family: 'Silkscreen', cursive;
    text-align: center;
    font-size: 150px;
    margin-top: 10%;
    color: rgb(35, 141, 35);
+}
+.press-key {
+   text-align: -webkit-center;
+   margin-top: 5%;
+   font-size: x-large;
+   font-family: monospace;
 }
 .intro-button {
    display: flex;
@@ -56,7 +63,7 @@ body {
 }
 .btn-start {
    font-size: 70px;
-   font-family: 'Indie Flower', cursive;
+   font-family: 'Silkscreen', cursive;
    background-color: rgb(0, 0, 0);
    color: #fff;
    text-decoration: none;
@@ -64,7 +71,7 @@ body {
 }
 .btn-records {
    font-size: 70px;
-   font-family: 'Indie Flower', cursive;
+   font-family: 'Silkscreen', cursive;
    background-color: rgb(0, 0, 0);
    color: #fff;
    text-decoration: none;
