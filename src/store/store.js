@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
    state:{
-      gameStatus:1,
+      gameStatus:0,
       lastPressedKey:"ArrowRight",
       snake:[[0,0],[0,1],[0,2]],
       food:[0,6],
