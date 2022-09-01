@@ -82,41 +82,51 @@ export default {
         //                                                                MAIN METHODS 
         calculateSnakeNextHead() {
                if (this.snakeDirection == constants.DIRECTION_RIGHT) {
+                  if(this.getNewSnakeDirection === null){
+                     let newDirection = this.getNewSnakeDirection
+                     newDirection = this.snakeDirection
+                     this.$store.dispatch('setNewSnakeDirection', newDirection)
+                  }
                   let y = this.getSnakeHead[0]
                   let x = this.getSnakeHead[1]
                   let newX = x + 1
                   let point = [y, newX]
-                  //this.$store.dispatch('setNewSnakeDirection', newDirection)
                   this.$store.dispatch('setNextSnakeHead', point)
                }
-               if (this.snakeDirection == constants.DIRECTION_LEFT) {
-                  //let newDirection = this.getNewSnakeDirection
-                  //newDirection = constants.DIRECTION_LEFT
+               if (this.snakeDirection == constants.DIRECTION_LEFT ) {
+                  if(this.getNewSnakeDirection === null){
+                     let newDirection = this.getNewSnakeDirection
+                     newDirection = this.snakeDirection
+                     this.$store.dispatch('setNewSnakeDirection', newDirection)
+                  }
                   let y = this.getSnakeHead[0]
                   let x = this.getSnakeHead[1]
                   let newX = x - 1
                   let point = [y, newX]
-                  //this.$store.dispatch('setNewSnakeDirection', newDirection)
                   this.$store.dispatch('setNextSnakeHead', point)
                }
-               if (this.snakeDirection == constants.DIRECTION_UP  ) {
-                  //let newDirection = this.getNewSnakeDirection
-                  //newDirection = constants.DIRECTION_UP
+               if (this.snakeDirection == constants.DIRECTION_UP ) {
+                  if(this.getNewSnakeDirection === null){
+                     let newDirection = this.getNewSnakeDirection
+                     newDirection = this.snakeDirection
+                     this.$store.dispatch('setNewSnakeDirection', newDirection)
+                  }
                   let y = this.getSnakeHead[0]
                   let x = this.getSnakeHead[1]
                   let newY = y - 1
                   let point = [newY, x]
-                  //this.$store.dispatch('setNewSnakeDirection', newDirection)
                   this.$store.dispatch('setNextSnakeHead', point)
                }
-               if (this.snakeDirection == constants.DIRECTION_DOWN) {
-                  //let newDirection = this.getNewSnakeDirection
-                  //newDirection = constants.DIRECTION_DOWN
+               if (this.snakeDirection == constants.DIRECTION_DOWN ) {
+                  if(this.getNewSnakeDirection === null){
+                     let newDirection = this.getNewSnakeDirection
+                     newDirection = this.snakeDirection
+                     this.$store.dispatch('setNewSnakeDirection', newDirection)
+                  }
                   let y = this.getSnakeHead[0]
                   let x = this.getSnakeHead[1]
                   let newY = y + 1
                   let point = [newY, x]
-                  //this.$store.dispatch('setNewSnakeDirection', newDirection)
                   this.$store.dispatch('setNextSnakeHead', point)
                }
          },

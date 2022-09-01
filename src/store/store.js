@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
    state:{
-      gameStatus:0,
+      gameStatus:1,
       lastPressedKey:"ArrowRight",
       snake:[[0,0],[0,1],[0,2]],
       food:[0,6],
@@ -118,6 +118,7 @@ export default new Vuex.Store({
       },
       setNextSnakeHead(state,point){
          state.nextSnakeHead = point
+         state.snakeNewDirection = null
       },
       moveSnakeHead(state){
          let nextHead = state.nextSnakeHead
@@ -141,28 +142,32 @@ export default new Vuex.Store({
       },
       setLastPressedKey(state, pressedKey) {
          state.lastPressedKey = pressedKey
-         if(state.snakeDirection == constants.DIRECTION_RIGHT && pressedKey == "ArrowLeft") {
-            state.snakeNewDirection = null
-         }
-         if(state.snakeDirection == constants.DIRECTION_LEFT && pressedKey == "ArrowRight") {
-            state.snakeNewDirection = null
-         }
-         if(state.snakeDirection == constants.DIRECTION_UP && pressedKey == "ArrowDown") {
-            state.snakeNewDirection = null
-         }
-         if(state.snakeDirection == constants.DIRECTION_DOWN && pressedKey == "ArrowUp") {
-            state.snakeNewDirection = null
-         }
          if(pressedKey == "ArrowRight"){
+            if(state.snakeDirection == constants.DIRECTION_LEFT && pressedKey == "ArrowRight") {
+               state.snakeNewDirection = null
+               return state.snakeNewDirection 
+            }
             state.snakeDirection = constants.DIRECTION_RIGHT
          }
          if(pressedKey == "ArrowLeft"){
+            if(state.snakeDirection == constants.DIRECTION_RIGHT && pressedKey == "ArrowLeft") {
+               state.snakeNewDirection = null
+               return state.snakeNewDirection 
+            }
             state.snakeDirection = constants.DIRECTION_LEFT
          }
          if(pressedKey == "ArrowUp"){
+            if(state.snakeDirection == constants.DIRECTION_DOWN && pressedKey == "ArrowUp") {
+               state.snakeNewDirection = null
+               return state.snakeNewDirection 
+            }
             state.snakeDirection = constants.DIRECTION_UP
          }
          if(pressedKey == "ArrowDown"){
+            if(state.snakeDirection == constants.DIRECTION_UP && pressedKey == "ArrowDown") {
+               state.snakeNewDirection = null
+               return state.snakeNewDirection 
+            }
             state.snakeDirection = constants.DIRECTION_DOWN
          }
       }
