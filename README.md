@@ -4,3 +4,5 @@ On this project, I trained with algorithms. There are quite a few yet another ve
 Environment: VScode, GIT, JS, HTML, CSS, VueJS 2, vuex
 
 ![img](https://raw.githubusercontent.com/panifedov/Panifedov.github.io/main/assets/img/img-portfolio/Snake-start.png)
+![img](https://github.com/panifedov/Panifedov.github.io/blob/main/assets/img/img-portfolio/Snake_game.png)
+![img](https://raw.githubusercontent.com/panifedov/Panifedov.github.io/main/assets/img/img-portfolio/Snake-game-over.png)
